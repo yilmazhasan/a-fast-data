@@ -1,0 +1,663 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tool Call Server",
+    "description": "API for CustomGPT tool calling integration",
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://dataselfserviceapi.pdx.xyz.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/list-schemas": {
+      "get": {
+        "summary": "List Schemas",
+        "description": "List all schemas in the database.",
+        "operationId": "list_schemas_post",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/list-tables-in-schema": {
+      "post": {
+        "summary": "List Tables In Schema",
+        "description": "List the tables in the schema.",
+        "operationId": "list_tables_in_schema_post",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchemaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/list-columns-in-table": {
+      "post": {
+        "summary": "List Columns In Table",
+        "description": "List the columns in the table.",
+        "operationId": "list_columns_in_table_post",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TableRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/execute-sql-and-fetch-data": {
+      "post": {
+        "summary": "Execute Sql And Fetch Data",
+        "description": "Execute SQL query and return the results.\nThe fields are self-explanatory including the sql_query, aim_of_query, original_user_query, and format.",
+        "operationId": "execute_sql_and_fetch_data_post",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SQLRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/search-information-schema-columns": {
+      "post": {
+        "summary": "Search Information Schema Columns",
+        "description": "Search the columns of the tables in a schema where the column name, table name, and schema name match the search criteria.\ncolumn_name_ilike is the column name pattern to search for with ILIKE operator including % and _ wildcards. E.g. If you might search for \"%comm%\" or \"%is%\" or \"is_\".",
+        "operationId": "search_information_schema_columns_post",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ColumnIlikeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/feedback": {
+      "post": {
+        "summary": "When the user initiates a feedback",
+        "description": "Provide feedback including all the important details such as the rating, the feedback, user notes etc.",
+        "operationId": "feedback_post",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ColumnIlikeRequest": {
+        "properties": {
+          "conversation_meta": {
+            "$ref": "#/components/schemas/ConversationMetaObject"
+          },
+          "schema_name": {
+            "type": "string",
+            "title": "Schema Name",
+            "description": "Schema name to fetch name of the tables in it. E.g. dbt_release_intermediate. Leave this empty to check all schemas. This value is compared by a strict equality operator.",
+            "example": "dbt_release_intermediate"
+          },
+          "table_name": {
+            "type": "string",
+            "title": "Table Name",
+            "description": "Table name to fetch information about such as columns, description, etc. E.g. companies. Leave this empty to check all tables. This value is compared by a strict equality operator.",
+            "example": "users"
+          },
+          "column_name_ilike": {
+            "type": "string",
+            "title": "Column Name Ilike",
+            "description": "Column name pattern to search. E.g. 'is%' that filters the columns that starts with 'is'. This value directly goes into the ILIKE operator.",
+            "example": "is%"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_meta",
+          "schema_name",
+          "table_name",
+          "column_name_ilike"
+        ],
+        "title": "ColumnIlikeRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "SuccessfulResponse": {
+        "type": "object",
+        "title": "SuccessfulResponse",
+        "properties": {
+          "conversation_meta": {
+            "type": "object",
+            "properties": {
+              "uuid": {
+                "type": "string",
+                "title": "The assigned UUID",
+                "description": "The UUID assigned by the server that will be used for the whole conversation."
+              },
+              "tool_counter": {
+                "type": "integer",
+                "title": "Next Tool Counter",
+                "description": "The tool counter that should be used for the next tool call."
+              }
+            }
+          },
+          "result": {
+            "type": "object",
+            "title": "Result",
+            "description": "The result data of the tool call. It can be a string, a number, a boolean, an array, or an object.",
+            "properties": {
+              "query_result_data": {
+                "type": "array",
+                "title": "Query Result Data",
+                "description": "The result data of the tool call. Each item can be of any type: string, number, boolean, array, or object.",
+                "items": {}
+              }
+            }
+          },
+          "error": {
+            "type": "object",
+            "title": "The error explained in detail",
+            "description": "The error object that contains information about the error in case something went wrong.",
+            "properties": {
+              "message": {
+                "type": "string",
+                "title": "Error",
+                "description": "The error message."
+              },
+              "error": {
+                "type": "string",
+                "title": "Error Code",
+                "description": "The error code."
+              },
+              "message_to_assistant": {
+                "type": "object",
+                "title": "Message for the Assistant",
+                "description": "Message for the assistant to proceed with the next tool call. A list of strings that will be used to guide the assistant.",
+                "properties": {
+                  "warning": {
+                    "type": "string"
+                  },
+                  "rows_head": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "workarounds_to_recover": {
+                  "type": "array",
+                  "title": "Possible Workarounds for Error Recovery",
+                  "description": "A list of possible causes for the error and corresponding guidance to help recover from it.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "case": {
+                        "type": "string",
+                        "title": "Error",
+                        "description": "The error message."
+                      },
+                      "workarounds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "guidance_to_assistant": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Guidance for the Assistant",
+              "description": "Guidance for the assistant to proceed with the next tool call. A list of strings that will be used to guide the assistant."
+            },
+            "message_to_assistant": {
+              "type": "object",
+              "title": "Message for the Assistant",
+              "description": "Message for the assistant to proceed with the next tool call. A list of strings that will be used to guide the assistant.",
+              "properties": {
+                "warning": {
+                  "type": "string"
+                },
+                "rows_head": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SQLRequest": {
+        "properties": {
+          "conversation_meta": {
+            "$ref": "#/components/schemas/ConversationMetaObject"
+          },
+          "sql_query": {
+            "type": "string",
+            "title": "Sql Query",
+            "description": "SQL query to execute",
+            "example": "SELECT * FROM dbt_release.users LIMIT 10"
+          },
+          "aim_of_query": {
+            "type": "string",
+            "title": "Aim Of Query",
+            "description": "Aim of the query",
+            "example": "Fetching the first 10 users"
+          },
+          "original_user_query": {
+            "type": "string",
+            "title": "Original User Query",
+            "description": "Original user query",
+            "example": "Hey there, please get the first 10 users. Thank you!"
+          },
+          "response_format": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "csv",
+                  "json"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response Format",
+            "description": "Format of the response e.g. csv or json",
+            "default": "json",
+            "example": "json"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_meta",
+          "sql_query",
+          "aim_of_query"
+        ],
+        "title": "SQLRequest"
+      },
+      "SchemaRequest": {
+        "properties": {
+          "conversation_meta": {
+            "$ref": "#/components/schemas/ConversationMetaObject"
+          },
+          "schema_name": {
+            "type": "string",
+            "title": "Schema Name",
+            "description": "Schema name to fetch name of the tables in it. E.g. dbt_release_intermediate",
+            "example": "dbt_release_intermediate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_meta",
+          "schema_name"
+        ],
+        "title": "SchemaRequest"
+      },
+      "TableRequest": {
+        "properties": {
+          "conversation_meta": {
+            "$ref": "#/components/schemas/ConversationMetaObject"
+          },
+          "schema_name": {
+            "type": "string",
+            "title": "Schema Name",
+            "description": "Schema name to fetch name of the tables in it. E.g. dbt_release_intermediate",
+            "example": "dbt_release_intermediate"
+          },
+          "table_name": {
+            "type": "string",
+            "title": "Table Name",
+            "description": "Table name to fetch information about such as columns, description, etc. E.g. companies",
+            "example": "users"
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_meta",
+          "schema_name",
+          "table_name"
+        ],
+        "title": "TableRequest"
+      },
+      "FeedbackRequest": {
+        "properties": {
+          "conversation_meta": {
+            "$ref": "#/components/schemas/ConversationMetaObject"
+          },
+          "rating": {
+            "type": "integer",
+            "title": "Rating",
+            "description": "Rating of the overall performance of the assitant in chat in a scale of 1 to 5. If the user did not provide a rating, you can judge overall chat performance.",
+            "example": "5"
+          },
+          "issues_encountered": {
+            "type": "string",
+            "title": "Issues Encountered",
+            "description": "Issues encountered by the assistant. E.g. it assumed some values which are not present in the data. A few sentences can be used to describe the assistant's mistakes.",
+            "example": "As an AI assistant, I incorrectly assumed the value of opportunity_owner_area was lowercase, when it was actually uppercase (e.g., 'APAC'). Additionally, I mistakenly thought '1-3 Seats' was a value for operational_segmentation_as_of_today, but the correct values were 'Small', 'Medium', and 'Enterprise'."
+          },
+          "features_that_worked_well": {
+            "type": "string",
+            "title": "Features That Worked Well",
+            "description": "Features that worked well by the assistant. E.g. it was able to fetch the data from the database. A few sentences can be used to describe the assistant's features.",
+            "example": "As an AI assistant, the provided context was super helpful and at first trial I generated correct SQL and executed it successfully with no issues."
+          },
+          "successful_tool_call_count": {
+            "type": "integer",
+            "title": "Successful Tool Call Count",
+            "description": "Number of successful tool calls made by the assistant. In case of success, it was able to fetch the data from the database. A single number can be used to describe the assistant's features. E.g. 3",
+            "example": "5"
+          },
+          "failed_tool_call_count": {
+            "type": "integer",
+            "title": "Failed Tool Call Count",
+            "description": "Number of failed tool calls made by the assistant. In case of failure, it was not able to fetch the data from the database. A single number can be used to describe the assistant's features. E.g. 2",
+            "example": "2"
+          },
+          "tool_calls_failed_because_of": {
+            "type": "string",
+            "title": "Tool Calls Failed Because Of",
+            "description": "A few sentences can be used to describe the assistant's tool usage failures. E.g. the schema name was wrong. E.g. Tool calls failed because of that the assistant was not able to fetch the data with the time limit.",
+            "example": "The tool calls failed because of that the assistant was not aware of the right column values for the type."
+          },
+          "suggestions_for_improvement": {
+            "type": "string",
+            "title": "Suggestions to the Developers for Improvement",
+            "description": "Suggestions to the developers for improvement. It's better to clariffy companies_d and companies difference better, as it causes confusion and wrong data is fetched. `companies_d` is a huge table and it's not good for average or summation stats. A few sentences can be used to describe the assistant's features. E.g. the schema name was wrong.",
+            "example": "The schema list includes noisy data so it's better to remove it. For enum values it's better to provide me example values."
+          },
+          "general_comments": {
+            "type": "string",
+            "title": "General Comments",
+            "description": "General comments. A few sentences can be used to describe the app performance, user experience, etc. E.g. The app is working quite well but there's room for improvement in table selection process.",
+            "example": "The user left very happy as the response was very helpful and the assistant was able to fetch the data from the database."
+          },
+          "additional_comments": {
+            "type": "string",
+            "title": "Additional Comments",
+            "description": "Additional comments. A few sentences can be used to describe the app performance, user experience, etc. E.g. The app is working quite well but there's room for improvement in table selection process.",
+            "example": "The user was probably knowing the databse structure very well so they guided me to the right direction."
+          },
+          "user": {
+            "type": "string",
+            "title": "User",
+            "description": "The user identity. E.g. Jicky from Sales team, Anonymous SDR, or A Product Manager. Whatever clue you have include it.",
+            "example": "Jicky from Sales team, Anonymous SDR, or A Junior Data Analyst."
+          }
+        },
+        "type": "object",
+        "required": [
+          "conversation_meta",
+          "rating",
+          "user_note",
+          "what_the_assistant_did_wrong",
+          "how_the_user_query_cleary_understood",
+          "tool_calls_made"
+        ],
+        "title": "FeedbackRequest"
+      },
+      "ConversationMetaObject": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "title": "Conversation UUID",
+            "description": "A unique identifier for this conversation. Use the same UUID for all related requests. For a new conversation, set this to 'please-generate-a-uuid'.",
+            "example": "478b291d-0008-4839-b3c5-466416addd2b",
+            "default": "please-generate-a-uuid"
+          },
+          "tool_counter": {
+            "type": "integer",
+            "title": "Conversation Tool Counter",
+            "description": "A number to indicate the which tool call is this in this conversation. Start from 1 and always increment by 1.",
+            "example": 2,
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "uuid",
+          "tool_counter"
+        ],
+        "title": "ConversationMetaObject"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
