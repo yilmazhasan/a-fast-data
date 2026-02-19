@@ -46,6 +46,24 @@ The LLM is supposed to create the correct SQL and pass it as a string argument t
 
 The knowledge might be anything that’s useful for AI to generate the correct SQL. The well structured knowledge for a optimized indexing is always better. Imagine that you look for a term in two dictionaries where one is sorted and the other is not, which and why you’d prefer is the same for AI.
 
+Some examples could be:
+- assumptions-and-default-values.txt
+- key-concepts.txt
+- key-tables.txt
+- naming-convention.txt
+- pii-considerations.txt
+- best-practices.txt
+- cheat-sheet.txt
+- routing-guidance.txt
+- schemas.txt
+- tables-names.txt
+- frequently-asked-XYZ-table-queries.txt
+- frequently-asked-data-analysis-queries.txt
+- frequently-used-nps-queries.txt
+- frequently-used-nrr-and-grr-queries.txt
+- looker-dashboards-aliases.txt
+- looker-dashboards-general.txt
+
 ## Cost and timing
 
 The cost would dependend on the app architecture design.
